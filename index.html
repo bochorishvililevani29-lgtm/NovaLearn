@@ -1,0 +1,2900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="description" content="EduQuest - Learn, Play, Grow">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>EduQuest — Learn · Play · Grow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #17171f;
+  --bg4: #1e1e28;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0f0f8;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --accent: #7c6dfa;
+  --accent2: #a855f7;
+  --green: #22d3a0;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --pink: #ec4899;
+  --radius: 12px;
+  --radius2: 20px;
+  --font: 'Space Grotesk', sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 240px;
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+/* ── Layout ── */
+.app-shell { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform var(--transition);
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-mark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* XP Bar in sidebar */
+.xp-panel {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.xp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.level-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.xp-label { font-size: 12px; color: var(--text3); }
+
+.xp-bar-track {
+  background: var(--bg4);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Nav */
+.nav-section { padding: 16px 12px 8px; flex: 1; }
+
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text3);
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: rgba(124,109,250,0.15); color: var(--accent); }
+.nav-item.active .nav-icon { color: var(--accent); }
+
+.nav-icon { font-size: 18px; width: 20px; text-align: center; flex-shrink: 0; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Main Content ── */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(245,158,11,0.15);
+  color: var(--amber);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ── Sections ── */
+.section {
+  display: none;
+  padding: 28px 28px 60px;
+  animation: fadeIn 0.25s ease;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ── Cards & Components ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 20px;
+}
+
+.card-sm { padding: 16px; border-radius: var(--radius); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--text), var(--text2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-sub { color: var(--text3); font-size: 14px; margin-bottom: 24px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition);
+  font-family: var(--font);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-ghost {
+  background: var(--bg3);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover { background: var(--bg4); color: var(--text); }
+
+.btn-success { background: rgba(34,211,160,0.15); color: var(--green); border: 1px solid rgba(34,211,160,0.25); }
+.btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ─────────────────────────────────────────────── */
+/* HOME / DASHBOARD */
+/* ─────────────────────────────────────────────── */
+.hero-welcome {
+  background: linear-gradient(135deg, rgba(124,109,250,0.12), rgba(168,85,247,0.08), rgba(6,182,212,0.06));
+  border: 1px solid rgba(124,109,250,0.2);
+  border-radius: var(--radius2);
+  padding: 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-welcome::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(124,109,250,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.hero-sub { color: var(--text2); font-size: 15px; margin-bottom: 20px; }
+
+.stat-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.stat-chip-val { font-weight: 700; font-size: 16px; }
+
+.stat-chip-val.green { color: var(--green); }
+.stat-chip-val.amber { color: var(--amber); }
+.stat-chip-val.accent { color: var(--accent); }
+.stat-chip-val.cyan { color: var(--cyan); }
+
+.quick-actions { margin-bottom: 24px; }
+
+.quick-actions h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.action-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+
+.action-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+}
+
+.action-card:hover { background: var(--bg3); border-color: var(--border2); transform: translateY(-2px); }
+
+.action-card .action-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+.action-card .action-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.action-card .action-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.recent-activity h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.activity-list { display: flex; flex-direction: column; gap: 10px; }
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+
+.activity-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.activity-info { flex: 1; min-width: 0; }
+.activity-title { font-size: 13px; font-weight: 600; }
+.activity-time { font-size: 11px; color: var(--text3); }
+.activity-xp { font-size: 13px; font-weight: 700; color: var(--green); white-space: nowrap; }
+
+/* ─────────────────────────────────────────────── */
+/* LEARNING SECTION */
+/* ─────────────────────────────────────────────── */
+.subject-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.subject-tab {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  transition: all var(--transition);
+}
+
+.subject-tab:hover { background: var(--bg3); color: var(--text); }
+.subject-tab.active { background: rgba(124,109,250,0.15); border-color: rgba(124,109,250,0.3); color: var(--accent); }
+
+.subject-content { display: none; }
+.subject-content.active { display: block; animation: fadeIn 0.2s ease; }
+
+.topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+.topic-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.topic-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.topic-card-header {
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.topic-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.topic-icon.math { background: rgba(124,109,250,0.15); }
+.topic-icon.science { background: rgba(34,211,160,0.15); }
+.topic-icon.history { background: rgba(245,158,11,0.15); }
+.topic-icon.coding { background: rgba(6,182,212,0.15); }
+
+.topic-card-body { padding: 0 20px 20px; }
+
+.topic-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.topic-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+.topic-footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topic-difficulty {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.topic-difficulty.easy { background: rgba(34,211,160,0.15); color: var(--green); }
+.topic-difficulty.medium { background: rgba(245,158,11,0.15); color: var(--amber); }
+.topic-difficulty.hard { background: rgba(239,68,68,0.15); color: var(--red); }
+
+.topic-xp { font-size: 12px; color: var(--text3); font-weight: 600; }
+
+/* Lesson Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(16px); } to { opacity: 1; transform: none; } }
+
+.modal-header {
+  padding: 24px 24px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.modal-close {
+  background: var(--bg3);
+  border: none;
+  color: var(--text2);
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.modal-close:hover { background: var(--bg4); color: var(--text); }
+
+.modal-body { padding: 0 24px 24px; }
+
+.lesson-content { line-height: 1.8; color: var(--text2); font-size: 15px; }
+.lesson-content h3 { color: var(--text); font-size: 18px; margin: 20px 0 8px; font-family: var(--font-display); }
+.lesson-content p { margin-bottom: 14px; }
+.lesson-content ul { padding-left: 20px; margin-bottom: 14px; }
+.lesson-content li { margin-bottom: 6px; }
+.lesson-content .highlight {
+  background: rgba(124,109,250,0.1);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-style: italic;
+}
+
+.lesson-content code {
+  font-family: var(--font-mono);
+  background: var(--bg4);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--cyan);
+}
+
+.lesson-content .formula {
+  font-family: var(--font-mono);
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--accent);
+  margin: 16px 0;
+}
+
+/* ─────────────────────────────────────────────── */
+/* AI CHAT */
+/* ─────────────────────────────────────────────── */
+.chat-layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px - 56px);
+  min-height: 500px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: fadeIn 0.2s ease;
+}
+
+.chat-message.user { flex-direction: row-reverse; }
+
+.chat-avatar {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.chat-avatar.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.chat-avatar.user { background: var(--bg4); border: 1px solid var(--border2); }
+
+.chat-bubble {
+  max-width: 72%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.chat-bubble.ai {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-top-left-radius: 4px;
+  color: var(--text);
+}
+
+.chat-bubble.user {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+.chat-bubble.typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 18px;
+}
+
+.typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  animation: typingBounce 1.2s ease infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+
+.chat-input-area {
+  border-top: 1px solid var(--border);
+  padding: 16px 0 0;
+}
+
+.chat-input-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 8px 8px 8px 16px;
+  transition: border-color var(--transition);
+}
+
+.chat-input-wrap:focus-within { border-color: rgba(124,109,250,0.4); }
+
+.chat-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  resize: none;
+  max-height: 120px;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+
+.chat-input::placeholder { color: var(--text3); }
+
+.chat-send {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-send:hover { opacity: 0.9; transform: scale(1.05); }
+.chat-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-suggestion {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.chat-suggestion:hover { background: var(--bg4); border-color: var(--border2); color: var(--text); }
+
+/* ─────────────────────────────────────────────── */
+/* QUIZ */
+/* ─────────────────────────────────────────────── */
+.quiz-subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.quiz-subject-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 24px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+}
+
+.quiz-subject-card:hover { border-color: var(--border2); transform: translateY(-2px); background: var(--bg3); }
+
+.quiz-subject-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+.quiz-subject-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.quiz-subject-info { font-size: 12px; color: var(--text3); }
+
+.quiz-arena { display: none; }
+.quiz-arena.active { display: block; animation: fadeIn 0.3s ease; }
+
+.quiz-progress-bar {
+  height: 4px;
+  background: var(--bg4);
+  border-radius: 2px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--cyan));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.quiz-counter { font-size: 13px; color: var(--text3); }
+.quiz-score-live { font-size: 13px; font-weight: 700; color: var(--green); }
+
+.quiz-question-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.quiz-question-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  font-family: var(--font-display);
+}
+
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+
+.quiz-option {
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-option:hover:not(.selected):not(.correct):not(.wrong) { background: var(--bg3); border-color: var(--border2); }
+.quiz-option.selected { border-color: rgba(124,109,250,0.5); background: rgba(124,109,250,0.1); }
+.quiz-option.correct { border-color: rgba(34,211,160,0.5); background: rgba(34,211,160,0.1); color: var(--green); }
+.quiz-option.wrong { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); color: var(--red); }
+
+.quiz-option-letter {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--bg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.quiz-result-screen {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.quiz-result-score {
+  font-size: 72px;
+  font-weight: 800;
+  font-family: var(--font-display);
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.quiz-result-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.quiz-result-sub { color: var(--text3); font-size: 15px; margin-bottom: 28px; }
+
+.quiz-result-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
+
+.quiz-stat { text-align: center; }
+.quiz-stat-val { font-size: 22px; font-weight: 700; display: block; }
+.quiz-stat-label { font-size: 12px; color: var(--text3); }
+
+/* ─────────────────────────────────────────────── */
+/* MINI GAME */
+/* ─────────────────────────────────────────────── */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.game-stats-bar {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.game-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.game-stat-val { color: var(--accent); font-size: 16px; }
+.game-stat-val.health { color: var(--red); }
+.game-stat-val.score { color: var(--green); }
+
+#gameCanvas {
+  border: 2px solid var(--border2);
+  border-radius: 16px;
+  background: var(--bg);
+  max-width: 100%;
+  cursor: none;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.game-controls-info {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.key-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.key {
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.game-over-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.game-canvas-wrap {
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+}
+
+.game-over-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--red);
+}
+
+.game-over-score { font-size: 18px; color: var(--text2); }
+
+/* Touch controls */
+.touch-controls {
+  display: none;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.touch-btn {
+  width: 56px; height: 56px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--transition);
+}
+
+.touch-btn:active { background: var(--bg4); }
+
+/* ─────────────────────────────────────────────── */
+/* LEADERBOARD */
+/* ─────────────────────────────────────────────── */
+.leaderboard-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.lb-tab {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  transition: all var(--transition);
+}
+
+.lb-tab:hover { background: var(--bg3); }
+.lb-tab.active { background: rgba(124,109,250,0.15); border-color: rgba(124,109,250,0.3); color: var(--accent); }
+
+.leaderboard-table {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  overflow: hidden;
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.lb-row:last-child { border-bottom: none; }
+.lb-row:hover { background: var(--bg3); }
+.lb-row.current-player { background: rgba(124,109,250,0.07); border-left: 2px solid var(--accent); }
+
+.lb-rank {
+  width: 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.lb-rank.top1 { color: #ffd700; font-size: 18px; }
+.lb-rank.top2 { color: #c0c0c0; font-size: 16px; }
+.lb-rank.top3 { color: #cd7f32; font-size: 16px; }
+
+.lb-avatar {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--bg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.lb-info { flex: 1; min-width: 0; }
+.lb-name { font-size: 14px; font-weight: 600; }
+.lb-detail { font-size: 12px; color: var(--text3); }
+
+.lb-score { font-size: 15px; font-weight: 700; color: var(--accent); }
+
+.lb-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text3);
+}
+
+.lb-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+/* ─────────────────────────────────────────────── */
+/* SETTINGS / PROFILE */
+/* ─────────────────────────────────────────────── */
+.settings-section { margin-bottom: 28px; }
+
+.settings-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+}
+
+.settings-label { font-size: 14px; font-weight: 500; }
+.settings-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--bg4);
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  transition: background var(--transition);
+}
+
+.toggle.on { background: var(--accent); border-color: var(--accent); }
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--transition);
+}
+
+.toggle.on .toggle-thumb { transform: translateX(20px); }
+
+.input-field {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition);
+  min-width: 160px;
+}
+
+.input-field:focus { border-color: rgba(124,109,250,0.5); }
+
+.danger-zone { border-color: rgba(239,68,68,0.2) !important; }
+
+/* ── Toast ── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 240px;
+  max-width: 320px;
+  animation: toastIn 0.3s ease;
+  pointer-events: all;
+  backdrop-filter: blur(10px);
+}
+
+.toast.success { border-color: rgba(34,211,160,0.3); }
+.toast.error { border-color: rgba(239,68,68,0.3); }
+.toast.info { border-color: rgba(124,109,250,0.3); }
+.toast.xp { border-color: rgba(245,158,11,0.3); }
+
+@keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(20px); } }
+
+/* ── XP Popup ── */
+.xp-popup {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--amber);
+  text-shadow: 0 0 20px rgba(245,158,11,0.5);
+  animation: xpFloat 1.5s ease forwards;
+}
+
+@keyframes xpFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+}
+
+/* ── Mobile ── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open { transform: none; }
+  .sidebar-overlay.open { display: block; }
+
+  .main-content { margin-left: 0; }
+
+  .hamburger { display: flex; }
+
+  .section { padding: 16px 16px 60px; }
+
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+  .hero-title { font-size: 22px; }
+
+  .chat-layout { height: calc(100vh - 60px - 80px); }
+  .chat-bubble { max-width: 88%; }
+
+  .game-canvas-wrap { width: 100%; }
+
+  .touch-controls { display: flex; }
+
+  .quiz-question-card { padding: 20px; }
+  .quiz-question-text { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="app-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">EduQuest</div>
+      <div class="logo-sub">Learn · Play · Grow</div>
+    </div>
+
+    <div class="xp-panel">
+      <div class="xp-header">
+        <span class="level-badge" id="levelBadge">LVL 1</span>
+        <span class="xp-label" id="xpLabel">0 / 200 XP</span>
+      </div>
+      <div class="xp-bar-track">
+        <div class="xp-bar-fill" id="xpBarFill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <nav class="nav-section">
+      <div class="nav-section-label">Main</div>
+      <button class="nav-item active" onclick="navigate('home')">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+      </button>
+      <button class="nav-item" onclick="navigate('learn')">
+        <span class="nav-icon">📚</span>
+        Learning
+      </button>
+      <button class="nav-item" onclick="navigate('chat')">
+        <span class="nav-icon">🤖</span>
+        AI Tutor
+      </button>
+      <div class="nav-section-label" style="margin-top:16px">Play</div>
+      <button class="nav-item" onclick="navigate('quiz')">
+        <span class="nav-icon">🧠</span>
+        Quiz
+        <span class="nav-badge" id="quizBadge">3</span>
+      </button>
+      <button class="nav-item" onclick="navigate('game')">
+        <span class="nav-icon">🎮</span>
+        Mini Game
+      </button>
+      <button class="nav-item" onclick="navigate('leaderboard')">
+        <span class="nav-icon">🏆</span>
+        Leaderboard
+      </button>
+      <div class="nav-section-label" style="margin-top:16px">Account</div>
+      <button class="nav-item" onclick="navigate('settings')">
+        <span class="nav-icon">⚙️</span>
+        Settings
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="streak-badge">
+          🔥 <span id="streakCount">0</span> day streak
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── HOME ─── -->
+    <div class="section active" id="section-home">
+      <div class="hero-welcome">
+        <div class="hero-title">Welcome back, <span id="playerNameHero">Scholar</span>! 👋</div>
+        <div class="hero-sub">Keep the momentum going. You're on your way to mastery.</div>
+        <div class="stat-chips">
+          <div class="stat-chip">
+            <span>🎓</span>
+            <span class="stat-chip-val accent" id="homeXP">0</span>
+            <span>Total XP</span>
+          </div>
+          <div class="stat-chip">
+            <span>📖</span>
+            <span class="stat-chip-val green" id="homeLessons">0</span>
+            <span>Lessons Done</span>
+          </div>
+          <div class="stat-chip">
+            <span>✅</span>
+            <span class="stat-chip-val cyan" id="homeQuizzes">0</span>
+            <span>Quizzes Taken</span>
+          </div>
+          <div class="stat-chip">
+            <span>🎮</span>
+            <span class="stat-chip-val amber" id="homeHighScore">0</span>
+            <span>Best Score</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-cards">
+          <div class="action-card" onclick="navigate('learn')">
+            <span class="action-icon">📚</span>
+            <div class="action-label">Continue Learning</div>
+            <div class="action-sub">Pick up where you left off</div>
+          </div>
+          <div class="action-card" onclick="navigate('quiz')">
+            <span class="action-icon">🧠</span>
+            <div class="action-label">Take a Quiz</div>
+            <div class="action-sub">Test your knowledge</div>
+          </div>
+          <div class="action-card" onclick="navigate('chat')">
+            <span class="action-icon">🤖</span>
+            <div class="action-label">Ask the AI</div>
+            <div class="action-sub">Get instant answers</div>
+          </div>
+          <div class="action-card" onclick="navigate('game')">
+            <span class="action-icon">🎮</span>
+            <div class="action-label">Play Game</div>
+            <div class="action-sub">Earn bonus XP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-activity">
+        <h3>Recent Activity</h3>
+        <div class="activity-list" id="activityList">
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(124,109,250,0.15)">🚀</div>
+            <div class="activity-info">
+              <div class="activity-title">Welcome to EduQuest!</div>
+              <div class="activity-time">Start your learning journey</div>
+            </div>
+            <div class="activity-xp">+0 XP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── LEARN ─── -->
+    <div class="section" id="section-learn">
+      <div class="section-title">Learning Center</div>
+      <div class="section-sub">Explore topics across Mathematics, Science, History, and Coding</div>
+
+      <div class="subject-tabs">
+        <button class="subject-tab active" onclick="switchSubject('math', this)">📐 Mathematics</button>
+        <button class="subject-tab" onclick="switchSubject('science', this)">🔬 Science</button>
+        <button class="subject-tab" onclick="switchSubject('history', this)">📜 History</button>
+        <button class="subject-tab" onclick="switchSubject('coding', this)">💻 Coding</button>
+      </div>
+
+      <div class="subject-content active" id="subject-math">
+        <div class="topic-grid" id="topics-math"></div>
+      </div>
+      <div class="subject-content" id="subject-science">
+        <div class="topic-grid" id="topics-science"></div>
+      </div>
+      <div class="subject-content" id="subject-history">
+        <div class="topic-grid" id="topics-history"></div>
+      </div>
+      <div class="subject-content" id="subject-coding">
+        <div class="topic-grid" id="topics-coding"></div>
+      </div>
+    </div>
+
+    <!-- ─── CHAT ─── -->
+    <div class="section" id="section-chat">
+      <div class="section-title">AI Tutor</div>
+      <div class="section-sub">Ask anything — your personal AI learning companion is here 24/7</div>
+
+      <div class="chat-layout">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message">
+            <div class="chat-avatar ai">🤖</div>
+            <div class="chat-bubble ai">
+              Hi there! I'm your EduQuest AI Tutor, powered by Claude. I can help you understand any topic — math, science, history, coding, and much more. What would you like to learn today?
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chat-suggestion" onclick="sendSuggestion(this)">Explain the Pythagorean theorem</button>
+            <button class="chat-suggestion" onclick="sendSuggestion(this)">How does photosynthesis work?</button>
+            <button class="chat-suggestion" onclick="sendSuggestion(this)">What caused World War I?</button>
+            <button class="chat-suggestion" onclick="sendSuggestion(this)">Teach me about loops in programming</button>
+          </div>
+          <div class="chat-input-wrap">
+            <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
+            <button class="chat-send" id="chatSendBtn" onclick="sendChat()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── QUIZ ─── -->
+    <div class="section" id="section-quiz">
+      <div id="quizSelector">
+        <div class="section-title">Quiz Center</div>
+        <div class="section-sub">Test your knowledge and earn XP. Choose a subject to begin!</div>
+        <div class="quiz-subject-grid">
+          <div class="quiz-subject-card" onclick="startQuiz('math')">
+            <span class="quiz-subject-icon">📐</span>
+            <div class="quiz-subject-title">Mathematics</div>
+            <div class="quiz-subject-info">Algebra, Geometry, Calculus</div>
+          </div>
+          <div class="quiz-subject-card" onclick="startQuiz('science')">
+            <span class="quiz-subject-icon">🔬</span>
+            <div class="quiz-subject-title">Science</div>
+            <div class="quiz-subject-info">Physics, Chemistry, Biology</div>
+          </div>
+          <div class="quiz-subject-card" onclick="startQuiz('history')">
+            <span class="quiz-subject-icon">📜</span>
+            <div class="quiz-subject-title">History</div>
+            <div class="quiz-subject-info">World events & civilizations</div>
+          </div>
+          <div class="quiz-subject-card" onclick="startQuiz('coding')">
+            <span class="quiz-subject-icon">💻</span>
+            <div class="quiz-subject-title">Coding</div>
+            <div class="quiz-subject-info">Programming concepts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-arena" id="quizArena">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <button class="btn btn-ghost" onclick="quitQuiz()" style="font-size:13px;padding:7px 14px">← Back</button>
+          <div class="quiz-header" style="margin:0">
+            <span class="quiz-counter" id="quizCounter">Question 1 / 10</span>
+            <span class="quiz-score-live" id="quizScoreLive">Score: 0</span>
+          </div>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div>
+        </div>
+        <div class="quiz-question-card" id="quizQuestionCard">
+          <div class="quiz-question-text" id="quizQuestionText">Loading...</div>
+          <div class="quiz-options" id="quizOptions"></div>
+        </div>
+        <div id="quizFeedback" style="display:none;margin-bottom:16px"></div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── GAME ─── -->
+    <div class="section" id="section-game">
+      <div class="section-title">Asteroid Blaster</div>
+      <div class="section-sub">Dodge asteroids, collect stars, survive as long as possible!</div>
+
+      <div class="game-container">
+        <div class="game-header">
+          <div class="game-stats-bar">
+            <div class="game-stat">❤️ Lives: <span class="game-stat-val health" id="gameLives">3</span></div>
+            <div class="game-stat">⭐ Score: <span class="game-stat-val score" id="gameScore">0</span></div>
+            <div class="game-stat">🏆 Best: <span class="game-stat-val" id="gameBest">0</span></div>
+            <div class="game-stat">🌊 Wave: <span class="game-stat-val" id="gameWave">1</span></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" id="gameStartBtn" onclick="startGame()">▶ Start Game</button>
+            <button class="btn btn-ghost" id="gamePauseBtn" onclick="togglePause()" style="display:none">⏸ Pause</button>
+          </div>
+        </div>
+
+        <div class="game-canvas-wrap">
+          <canvas id="gameCanvas" width="700" height="450"></canvas>
+          <div class="game-over-overlay" id="gameOverOverlay" style="display:none">
+            <div class="game-over-title">GAME OVER</div>
+            <div class="game-over-score">Final Score: <strong id="gameOverScore">0</strong></div>
+            <button class="btn btn-primary" onclick="startGame()">Play Again</button>
+            <button class="btn btn-ghost" onclick="saveScore()">💾 Save to Leaderboard</button>
+          </div>
+        </div>
+
+        <div class="game-controls-info">
+          <div class="key-hint"><kbd class="key">W A S D</kbd> or <kbd class="key">↑↓←→</kbd> Move</div>
+          <div class="key-hint"><kbd class="key">SPACE</kbd> Shoot</div>
+          <div class="key-hint"><kbd class="key">P</kbd> Pause</div>
+        </div>
+
+        <div class="touch-controls">
+          <button class="touch-btn" id="tcUp" ontouchstart="touchStart('up')" ontouchend="touchEnd('up')">⬆</button>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="touch-btn" id="tcLeft" ontouchstart="touchStart('left')" ontouchend="touchEnd('left')">⬅</button>
+            <button class="touch-btn" id="tcDown" ontouchstart="touchStart('down')" ontouchend="touchEnd('down')">⬇</button>
+          </div>
+          <button class="touch-btn" id="tcRight" ontouchstart="touchStart('right')" ontouchend="touchEnd('right')">➡</button>
+          <button class="touch-btn" style="background:rgba(124,109,250,0.2);border-color:rgba(124,109,250,0.4);width:72px;font-size:18px" ontouchstart="touchStart('shoot')" ontouchend="touchEnd('shoot')">🔫</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── LEADERBOARD ─── -->
+    <div class="section" id="section-leaderboard">
+      <div class="section-title">Leaderboard</div>
+      <div class="section-sub">Local high scores — who's the top scholar?</div>
+
+      <div class="leaderboard-tabs">
+        <button class="lb-tab active" onclick="switchLbTab('game', this)">🎮 Game Scores</button>
+        <button class="lb-tab" onclick="switchLbTab('quiz', this)">🧠 Quiz Scores</button>
+        <button class="lb-tab" onclick="switchLbTab('xp', this)">⭐ XP Rankings</button>
+      </div>
+
+      <div id="lbContent"></div>
+    </div>
+
+    <!-- ─── SETTINGS ─── -->
+    <div class="section" id="section-settings">
+      <div class="section-title">Settings</div>
+      <div class="section-sub">Customize your EduQuest experience</div>
+
+      <div class="settings-section">
+        <h3>Profile</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">Display Name</div>
+            <div class="settings-desc">Shown on leaderboard and dashboard</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input class="input-field" id="nameInput" placeholder="Enter name..." maxlength="20">
+            <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onclick="saveName()">Save</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">Avatar</div>
+            <div class="settings-desc">Choose your learning avatar</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="avatarPicker"></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Preferences</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">Sound Effects</div>
+            <div class="settings-desc">Play sounds on correct answers</div>
+          </div>
+          <div class="toggle" id="soundToggle" onclick="toggleSetting('sound')">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">XP Animations</div>
+            <div class="settings-desc">Show floating XP numbers</div>
+          </div>
+          <div class="toggle on" id="xpAnimToggle" onclick="toggleSetting('xpAnim')">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">Auto-advance Quiz</div>
+            <div class="settings-desc">Move to next question automatically</div>
+          </div>
+          <div class="toggle" id="autoAdvanceToggle" onclick="toggleSetting('autoAdvance')">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Progress</h3>
+        <div class="settings-row" style="background:rgba(239,68,68,0.05)" class="danger-zone">
+          <div>
+            <div class="settings-label">Reset All Progress</div>
+            <div class="settings-desc">Clear XP, scores, and activity — cannot be undone</div>
+          </div>
+          <button class="btn btn-danger" onclick="resetProgress()">Reset</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>About</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">EduQuest v1.0</div>
+            <div class="settings-desc">Built with ❤️ — AI-powered learning platform</div>
+          </div>
+          <span style="font-size:20px">🚀</span>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">Install App</div>
+            <div class="settings-desc">Add EduQuest to your home screen</div>
+          </div>
+          <button class="btn btn-ghost" onclick="promptInstall()" style="font-size:13px;padding:7px 14px">📲 Install</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Lesson Modal -->
+<div class="modal-overlay" id="lessonModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:800" id="modalTitle">Topic</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px" id="modalMeta"></div>
+      </div>
+      <button class="modal-close" onclick="closeLessonModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="lesson-content" id="lessonContent"></div>
+      <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn btn-ghost" onclick="closeLessonModal()">Close</button>
+        <button class="btn btn-primary" id="lessonCompleteBtn" onclick="completeLesson()">✓ Mark Complete (+XP)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ─────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────
+const STATE = {
+  xp: 0, level: 1, streak: 0, lastVisit: null,
+  completedLessons: [],
+  quizzesTaken: 0,
+  gameHighScore: 0,
+  totalQuizScore: 0,
+  quizzesPassed: 0,
+  playerName: 'Scholar',
+  playerAvatar: '🦁',
+  settings: { sound: false, xpAnim: true, autoAdvance: false },
+  activity: []
+};
+
+const XP_PER_LEVEL = [0, 200, 450, 800, 1250, 1800, 2500, 3300, 4200, 5200, 6500];
+
+function saveState() {
+  localStorage.setItem('eduquest_state', JSON.stringify(STATE));
+}
+
+function loadState() {
+  const saved = localStorage.getItem('eduquest_state');
+  if (saved) {
+    const data = JSON.parse(saved);
+    Object.assign(STATE, data);
+    // Check streak
+    const today = new Date().toDateString();
+    if (STATE.lastVisit !== today) {
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      STATE.streak = STATE.lastVisit === yesterday ? (STATE.streak || 0) + 1 : 1;
+      STATE.lastVisit = today;
+      saveState();
+    }
+  } else {
+    STATE.lastVisit = new Date().toDateString();
+    STATE.streak = 1;
+    saveState();
+  }
+}
+
+function addXP(amount, label) {
+  STATE.xp += amount;
+  STATE.level = calcLevel(STATE.xp);
+  addActivity(`Earned XP: ${label}`, `+${amount} XP`, '⭐', 'rgba(245,158,11,0.15)');
+  saveState();
+  updateXPUI();
+  if (STATE.settings.xpAnim) showXPPopup(amount);
+  showToast(`+${amount} XP — ${label}`, 'xp', '⭐');
+}
+
+function calcLevel(xp) {
+  for (let i = XP_PER_LEVEL.length - 1; i >= 0; i--) {
+    if (xp >= XP_PER_LEVEL[i]) return i + 1;
+  }
+  return 1;
+}
+
+function updateXPUI() {
+  const level = STATE.level;
+  const currentXP = STATE.xp;
+  const levelStart = XP_PER_LEVEL[Math.min(level - 1, XP_PER_LEVEL.length - 1)];
+  const levelEnd = XP_PER_LEVEL[Math.min(level, XP_PER_LEVEL.length - 1)] || levelStart + 500;
+  const pct = Math.min(100, ((currentXP - levelStart) / (levelEnd - levelStart)) * 100);
+
+  document.getElementById('levelBadge').textContent = `LVL ${level}`;
+  document.getElementById('xpLabel').textContent = `${currentXP} / ${levelEnd} XP`;
+  document.getElementById('xpBarFill').style.width = `${pct}%`;
+  document.getElementById('streakCount').textContent = STATE.streak || 0;
+  document.getElementById('homeXP').textContent = currentXP;
+  document.getElementById('homeLessons').textContent = STATE.completedLessons.length;
+  document.getElementById('homeQuizzes').textContent = STATE.quizzesTaken;
+  document.getElementById('homeHighScore').textContent = STATE.gameHighScore;
+  document.getElementById('playerNameHero').textContent = STATE.playerName;
+}
+
+function addActivity(title, xp, icon, iconBg) {
+  STATE.activity.unshift({ title, xp, icon, iconBg, time: new Date().toLocaleTimeString() });
+  if (STATE.activity.length > 10) STATE.activity.pop();
+  renderActivity();
+}
+
+function renderActivity() {
+  const list = document.getElementById('activityList');
+  if (!STATE.activity.length) return;
+  list.innerHTML = STATE.activity.map(a => `
+    <div class="activity-item">
+      <div class="activity-icon" style="background:${a.iconBg}">${a.icon}</div>
+      <div class="activity-info">
+        <div class="activity-title">${a.title}</div>
+        <div class="activity-time">${a.time}</div>
+      </div>
+      <div class="activity-xp">${a.xp}</div>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────
+const sectionTitles = {
+  home: 'Dashboard', learn: 'Learning Center', chat: 'AI Tutor',
+  quiz: 'Quiz Center', game: 'Asteroid Blaster', leaderboard: 'Leaderboard', settings: 'Settings'
+};
+
+function navigate(section) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`section-${section}`).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(`'${section}'`)) n.classList.add('active');
+  });
+  document.getElementById('topbarTitle').textContent = sectionTitles[section];
+  closeSidebar();
+
+  if (section === 'leaderboard') renderLeaderboard('game');
+  if (section === 'settings') initSettings();
+  if (section === 'game' && gameState.running) {}
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ─────────────────────────────────────────────────
+// LEARNING DATA
+// ─────────────────────────────────────────────────
+const TOPICS = {
+  math: [
+    {
+      id: 'math-algebra', title: 'Algebra Fundamentals', icon: '🔢', difficulty: 'easy', xp: 50,
+      desc: 'Variables, expressions, equations, and the language of algebra.',
+      content: `<h3>What is Algebra?</h3><p>Algebra is a branch of mathematics dealing with symbols and the rules for manipulating those symbols. These symbols represent quantities without fixed values, known as <em>variables</em>.</p>
+      <div class="highlight">Algebra is the study of mathematical symbols and the rules for manipulating those symbols — it is a unifying thread of almost all of mathematics.</div>
+      <h3>Variables & Expressions</h3><p>A <strong>variable</strong> is a letter that represents an unknown number. For example, in the expression <code>3x + 5</code>, <code>x</code> is the variable.</p>
+      <div class="formula">3x + 5 = 20 → x = 5</div>
+      <h3>Key Operations</h3><ul><li><strong>Addition/Subtraction:</strong> Combine like terms (e.g., <code>3x + 2x = 5x</code>)</li><li><strong>Multiplication:</strong> Distribute across parentheses (e.g., <code>2(x+3) = 2x+6</code>)</li><li><strong>Solving equations:</strong> Isolate the variable on one side</li></ul>
+      <h3>Why Algebra Matters</h3><p>Algebra is the gateway to all higher mathematics. It helps model real-world problems from calculating interest rates to designing algorithms.</p>`
+    },
+    {
+      id: 'math-geometry', title: 'Geometry Basics', icon: '📐', difficulty: 'easy', xp: 50,
+      desc: 'Shapes, angles, area, perimeter, and the Pythagorean theorem.',
+      content: `<h3>Geometry: The Study of Shapes</h3><p>Geometry is the branch of mathematics concerned with the properties and relations of points, lines, surfaces, and solids.</p>
+      <h3>Key Formulas</h3>
+      <div class="formula">Area of Circle = π r²</div>
+      <div class="formula">Pythagorean Theorem: a² + b² = c²</div>
+      <div class="formula">Area of Triangle = ½ × base × height</div>
+      <h3>The Pythagorean Theorem</h3><p>In a right triangle, the square of the hypotenuse (c) equals the sum of squares of the other two sides. If a = 3, b = 4, then c = 5.</p>
+      <div class="highlight">The Pythagorean theorem is used in architecture, navigation, computer graphics, and physics simulations.</div>
+      <h3>Angles</h3><ul><li>Acute: less than 90°</li><li>Right: exactly 90°</li><li>Obtuse: between 90° and 180°</li><li>Straight: exactly 180°</li></ul>`
+    },
+    {
+      id: 'math-calculus', title: 'Introduction to Calculus', icon: '∫', difficulty: 'hard', xp: 120,
+      desc: 'Limits, derivatives, and the fundamental theorem of calculus.',
+      content: `<h3>What is Calculus?</h3><p>Calculus is the mathematical study of continuous change. It has two major branches: <strong>Differential Calculus</strong> and <strong>Integral Calculus</strong>.</p>
+      <h3>Limits</h3><p>A limit describes the value a function approaches as the input approaches some value.</p>
+      <div class="formula">lim(x→2) [x²] = 4</div>
+      <h3>Derivatives</h3><p>The derivative measures how a function changes at any given point — it's the instantaneous rate of change.</p>
+      <div class="formula">d/dx [x²] = 2x</div>
+      <h3>Integration</h3><p>Integration is the reverse of differentiation. It finds the area under a curve.</p>
+      <div class="formula">∫ x² dx = x³/3 + C</div>
+      <div class="highlight">Calculus powers modern physics, engineering, economics, computer science, and statistics.</div>`
+    },
+    {
+      id: 'math-probability', title: 'Probability & Statistics', icon: '🎲', difficulty: 'medium', xp: 80,
+      desc: 'Chance, data analysis, mean, median, mode, and distributions.',
+      content: `<h3>Probability Fundamentals</h3><p>Probability measures the likelihood of an event occurring, expressed as a number from 0 (impossible) to 1 (certain).</p>
+      <div class="formula">P(event) = favorable outcomes / total outcomes</div>
+      <h3>Statistics: Describing Data</h3><ul>
+      <li><strong>Mean:</strong> Sum of all values divided by count</li>
+      <li><strong>Median:</strong> Middle value when sorted</li>
+      <li><strong>Mode:</strong> Most frequently occurring value</li>
+      <li><strong>Standard Deviation:</strong> Measure of data spread</li>
+      </ul>
+      <h3>The Normal Distribution</h3><p>Many natural phenomena follow a bell-curve distribution — most values cluster near the mean, with fewer extremes.</p>
+      <div class="highlight">Statistics is fundamental to scientific research, medical trials, business analytics, and machine learning.</div>`
+    }
+  ],
+  science: [
+    {
+      id: 'sci-physics', title: "Newton's Laws of Motion", icon: '🍎', difficulty: 'medium', xp: 70,
+      desc: "The three fundamental laws governing all motion in the universe.",
+      content: `<h3>Newton's Three Laws</h3><p>Isaac Newton formulated three laws that describe the relationship between forces acting on a body and its motion.</p>
+      <h3>First Law — Inertia</h3>
+      <div class="highlight">An object at rest stays at rest, and an object in motion stays in motion with the same speed and direction unless acted upon by an unbalanced force.</div>
+      <h3>Second Law — Force</h3>
+      <div class="formula">F = m × a</div>
+      <p>Force equals mass times acceleration. If you double the force, acceleration doubles. If you double the mass, acceleration halves.</p>
+      <h3>Third Law — Action/Reaction</h3><p>For every action, there is an equal and opposite reaction. When you push off a wall, the wall pushes back on you with equal force.</p>
+      <h3>Real-World Applications</h3><ul><li>Rocket propulsion (3rd law)</li><li>Car safety design (1st law)</li><li>Weight training (2nd law)</li></ul>`
+    },
+    {
+      id: 'sci-cells', title: 'Cell Biology', icon: '🔬', difficulty: 'easy', xp: 55,
+      desc: 'The building blocks of life: cell structure, organelles, and division.',
+      content: `<h3>The Cell: Unit of Life</h3><p>Cells are the basic structural and functional units of all living organisms. There are two main types: <strong>prokaryotic</strong> (no nucleus) and <strong>eukaryotic</strong> (with nucleus).</p>
+      <h3>Key Organelles</h3><ul>
+      <li>🟢 <strong>Nucleus:</strong> Control center — contains DNA</li>
+      <li>⚡ <strong>Mitochondria:</strong> "Powerhouse" — produces ATP energy</li>
+      <li>🏭 <strong>Ribosomes:</strong> Protein factories</li>
+      <li>📬 <strong>Golgi Apparatus:</strong> Packages and ships proteins</li>
+      <li>🌿 <strong>Chloroplasts:</strong> In plants — photosynthesis</li>
+      </ul>
+      <div class="highlight">The human body contains approximately 37 trillion cells, each performing specialized functions.</div>
+      <h3>Cell Division</h3><p><strong>Mitosis</strong> produces two identical cells (growth/repair). <strong>Meiosis</strong> produces four genetically diverse cells (sexual reproduction).</p>`
+    },
+    {
+      id: 'sci-chemistry', title: 'Atomic Structure', icon: '⚛️', difficulty: 'medium', xp: 75,
+      desc: 'Protons, neutrons, electrons, atomic number, and the periodic table.',
+      content: `<h3>The Atom</h3><p>Atoms are the basic units of matter. Every atom consists of a nucleus surrounded by electrons.</p>
+      <h3>Atomic Particles</h3><ul>
+      <li>⊕ <strong>Protons:</strong> Positive charge — in nucleus — determines element identity</li>
+      <li>⊙ <strong>Neutrons:</strong> No charge — in nucleus — determines isotope</li>
+      <li>⊖ <strong>Electrons:</strong> Negative charge — orbit nucleus in shells</li>
+      </ul>
+      <div class="formula">Atomic Number = number of protons</div>
+      <div class="formula">Mass Number = protons + neutrons</div>
+      <h3>Electron Shells</h3><p>Electrons occupy energy levels (shells) around the nucleus. The first shell holds 2, the second holds 8, the third holds 18.</p>
+      <div class="highlight">Chemical reactions are all about electrons — atoms react to achieve stable outer electron configurations.</div>`
+    },
+    {
+      id: 'sci-photosynthesis', title: 'Photosynthesis & Respiration', icon: '🌿', difficulty: 'medium', xp: 65,
+      desc: 'How plants capture light energy and convert it to glucose.',
+      content: `<h3>Photosynthesis</h3><p>The process by which plants, algae, and some bacteria convert light energy into chemical energy (glucose).</p>
+      <div class="formula">6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂</div>
+      <h3>Two Stages</h3><ul>
+      <li><strong>Light Reactions:</strong> Occur in thylakoids — capture solar energy, split water, produce ATP and NADPH</li>
+      <li><strong>Calvin Cycle:</strong> Occurs in stroma — uses ATP/NADPH to fix CO₂ into glucose</li>
+      </ul>
+      <h3>Cellular Respiration</h3><p>The reverse process — organisms break down glucose to release energy as ATP.</p>
+      <div class="formula">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP</div>
+      <div class="highlight">Photosynthesis is the foundation of almost all food chains on Earth — it captures the sun's energy and stores it in chemical form.</div>`
+    }
+  ],
+  history: [
+    {
+      id: 'hist-ancientrome', title: 'The Roman Empire', icon: '🏛️', difficulty: 'medium', xp: 70,
+      desc: 'Rise, peak, and fall of the greatest empire of the ancient world.',
+      content: `<h3>From Republic to Empire</h3><p>Rome began as a small city-state around 753 BCE and grew into the most powerful empire the Western world had seen, lasting until 476 CE — over 1,200 years.</p>
+      <h3>The Republic (509–27 BCE)</h3><p>Rome was governed by the Senate, two consuls, and a complex system of checks and balances. This era saw the Punic Wars with Carthage and rapid Mediterranean expansion.</p>
+      <div class="highlight">Julius Caesar's assassination in 44 BCE triggered the end of the Republic and the rise of the Imperial era.</div>
+      <h3>The Empire</h3><p>Augustus became Rome's first Emperor in 27 BCE. The <em>Pax Romana</em> (Roman Peace) lasted ~200 years — a golden age of prosperity, law, and engineering.</p>
+      <h3>Legacy</h3><ul>
+      <li>Roman law forms the basis of modern legal systems</li>
+      <li>Latin evolved into the Romance languages (French, Spanish, Italian, Portuguese)</li>
+      <li>Engineering feats — roads, aqueducts, the Pantheon</li>
+      </ul>`
+    },
+    {
+      id: 'hist-ww2', title: 'World War II', icon: '🗺️', difficulty: 'hard', xp: 100,
+      desc: 'Causes, major events, turning points, and consequences of WWII.',
+      content: `<h3>Overview</h3><p>World War II (1939–1945) was the deadliest conflict in human history, involving over 30 countries and resulting in 70–85 million deaths.</p>
+      <h3>Causes</h3><ul>
+      <li>Aftermath of WWI and Treaty of Versailles humiliation of Germany</li>
+      <li>Rise of Fascism — Hitler in Germany, Mussolini in Italy</li>
+      <li>Global economic depression of the 1930s</li>
+      <li>Failed policy of appeasement by Western powers</li>
+      </ul>
+      <h3>Major Theatres</h3><p><strong>Europe:</strong> German Blitzkrieg through Europe → Battle of Britain → Operation Barbarossa (invasion of USSR) → D-Day (June 6, 1944) → fall of Berlin.</p>
+      <p><strong>Pacific:</strong> Japan's expansion through Asia → Pearl Harbor (Dec 7, 1941) → Island hopping campaign → Atomic bombs on Hiroshima and Nagasaki.</p>
+      <div class="highlight">The Holocaust — the systematic genocide of 6 million Jews — remains one of history's greatest atrocities and a constant lesson about the dangers of fascism and hatred.</div>
+      <h3>Consequences</h3><ul><li>Formation of the United Nations</li><li>Cold War between USA and USSR</li><li>Decolonization movement worldwide</li><li>Marshall Plan rebuilding of Europe</li></ul>`
+    },
+    {
+      id: 'hist-renaissance', title: 'The Renaissance', icon: '🎨', difficulty: 'easy', xp: 60,
+      desc: 'Cultural rebirth of Europe, humanism, art, and scientific revolution.',
+      content: `<h3>The Renaissance (14th–17th Century)</h3><p>The Renaissance was a "rebirth" of classical Greek and Roman culture that began in Italy and spread across Europe, transforming art, philosophy, science, and religion.</p>
+      <h3>Key Ideas: Humanism</h3><p>Humanism placed humans at the center of the universe. Rather than focusing purely on the divine, Renaissance thinkers celebrated human potential, reason, and achievement.</p>
+      <div class="highlight">Leonardo da Vinci — painter, sculptor, architect, musician, mathematician, engineer, inventor — embodied the Renaissance ideal of the "Universal Man."</div>
+      <h3>Art Revolution</h3><ul>
+      <li><strong>Perspective:</strong> Mathematical principles to create realistic depth</li>
+      <li><strong>Chiaroscuro:</strong> Light and shadow techniques</li>
+      <li>Masters: Leonardo, Michelangelo, Raphael, Botticelli</li>
+      </ul>
+      <h3>Scientific Beginnings</h3><p>Copernicus (heliocentric solar system), Galileo (telescope), Vesalius (human anatomy) — the Renaissance planted seeds of the Scientific Revolution.</p>`
+    },
+    {
+      id: 'hist-industrial', title: 'The Industrial Revolution', icon: '🏭', difficulty: 'medium', xp: 80,
+      desc: 'How mechanization transformed society, economy, and daily life.',
+      content: `<h3>The Industrial Revolution (1760–1840)</h3><p>Beginning in Britain, the Industrial Revolution transformed manufacturing from hand production to machine-based production, fundamentally reshaping society.</p>
+      <h3>Key Inventions</h3><ul>
+      <li>🔧 <strong>Steam Engine</strong> (James Watt, 1769) — powered factories and locomotives</li>
+      <li>🧵 <strong>Spinning Jenny</strong> (Hargreaves) — revolutionized textile production</li>
+      <li>🚂 <strong>Locomotive</strong> — enabled mass transportation of goods and people</li>
+      </ul>
+      <h3>Social Impact</h3><p>Massive urbanization as workers moved from farms to cities. New social classes emerged: the industrial bourgeoisie and the urban working class (proletariat).</p>
+      <div class="highlight">Charles Dickens documented the harsh realities of industrial Britain — child labor, 14-hour workdays, and extreme poverty alongside enormous wealth.</div>
+      <h3>Long-term Legacy</h3><ul><li>Rise of capitalism and socialist movements</li><li>Environmental consequences (beginning of fossil fuel era)</li><li>Foundation of modern global economy</li></ul>`
+    }
+  ],
+  coding: [
+    {
+      id: 'code-basics', title: 'Programming Fundamentals', icon: '💡', difficulty: 'easy', xp: 55,
+      desc: 'Variables, data types, conditionals, and the basics of code.',
+      content: `<h3>What is Programming?</h3><p>Programming is giving instructions to a computer in a language it can understand. These instructions are written in a programming language like Python, JavaScript, or C++.</p>
+      <h3>Variables</h3><p>Variables store data that your program can use and manipulate.</p>
+      <div class="formula">name = "Alice"  |  age = 25  |  score = 9.5</div>
+      <h3>Data Types</h3><ul>
+      <li><code>String</code>: Text — "Hello, World!"</li>
+      <li><code>Integer</code>: Whole numbers — 42</li>
+      <li><code>Float</code>: Decimal numbers — 3.14</li>
+      <li><code>Boolean</code>: True or False</li>
+      <li><code>List/Array</code>: Collection of values — [1, 2, 3]</li>
+      </ul>
+      <h3>Conditionals</h3>
+      <div class="formula">if age >= 18:  print("Adult")<br>else: print("Minor")</div>
+      <div class="highlight">Every piece of software — from Instagram to NASA mission control — is built from these fundamental building blocks.</div>`
+    },
+    {
+      id: 'code-loops', title: 'Loops & Iteration', icon: '🔄', difficulty: 'easy', xp: 55,
+      desc: 'For loops, while loops, and how to repeat actions efficiently.',
+      content: `<h3>Why Loops?</h3><p>Loops allow you to execute code multiple times without writing it repeatedly. This is a core programming concept called <em>DRY</em> (Don't Repeat Yourself).</p>
+      <h3>For Loops</h3><p>Used when you know how many times to repeat:</p>
+      <div class="formula">for i in range(5):<br>&nbsp;&nbsp;print(i)  # Outputs 0,1,2,3,4</div>
+      <h3>While Loops</h3><p>Used when repeating until a condition changes:</p>
+      <div class="formula">while score < 100:<br>&nbsp;&nbsp;score += 10</div>
+      <h3>Iterating Over Data</h3>
+      <div class="formula">fruits = ["apple","banana","cherry"]<br>for fruit in fruits:<br>&nbsp;&nbsp;print(fruit)</div>
+      <div class="highlight">Loops are used everywhere: rendering game frames, processing database records, training machine learning models, and generating every website you visit.</div>`
+    },
+    {
+      id: 'code-functions', title: 'Functions & Modularity', icon: '🔧', difficulty: 'medium', xp: 75,
+      desc: 'Writing reusable code with functions, parameters, and return values.',
+      content: `<h3>Functions: Building Blocks</h3><p>A function is a named, reusable block of code that performs a specific task. Functions make code organized, readable, and maintainable.</p>
+      <div class="formula">def greet(name):<br>&nbsp;&nbsp;return "Hello, " + name + "!"<br><br>message = greet("Alice")<br># → "Hello, Alice!"</div>
+      <h3>Parameters & Arguments</h3><ul>
+      <li><strong>Parameters</strong> are the variables in the function definition</li>
+      <li><strong>Arguments</strong> are the actual values passed when calling the function</li>
+      <li><strong>Return values</strong> pass data back to the caller</li>
+      </ul>
+      <h3>Why Functions Matter</h3><ul>
+      <li>Reusability — write once, call many times</li>
+      <li>Testing — test each function independently</li>
+      <li>Readability — self-documenting code</li>
+      <li>Abstraction — hide complex details</li>
+      </ul>
+      <div class="highlight">Good code is made of small, focused functions that each do one thing well — like Lego bricks that snap together to build complex systems.</div>`
+    },
+    {
+      id: 'code-algorithms', title: 'Algorithms & Big O', icon: '⚡', difficulty: 'hard', xp: 100,
+      desc: 'Sorting, searching, and understanding algorithmic complexity.',
+      content: `<h3>What is an Algorithm?</h3><p>An algorithm is a step-by-step procedure for solving a problem. The efficiency of an algorithm is measured by how its performance scales with input size.</p>
+      <h3>Big O Notation</h3><ul>
+      <li><code>O(1)</code> — Constant: same time regardless of input size</li>
+      <li><code>O(log n)</code> — Logarithmic: binary search</li>
+      <li><code>O(n)</code> — Linear: single loop through data</li>
+      <li><code>O(n²)</code> — Quadratic: nested loops — bad!</li>
+      <li><code>O(2ⁿ)</code> — Exponential: avoid at all costs</li>
+      </ul>
+      <h3>Common Sorting Algorithms</h3><ul>
+      <li><strong>Bubble Sort:</strong> O(n²) — compare adjacent, swap if wrong order</li>
+      <li><strong>Binary Search:</strong> O(log n) — divide and conquer on sorted data</li>
+      <li><strong>Merge Sort:</strong> O(n log n) — divide, sort halves, merge</li>
+      <li><strong>Quick Sort:</strong> O(n log n) average — pivot-based partitioning</li>
+      </ul>
+      <div class="highlight">An algorithm running in O(n²) on 1 billion records would take ~31 years. The same problem with O(n log n) takes ~30 seconds. Algorithmic efficiency matters enormously at scale.</div>`
+    }
+  ]
+};
+
+function renderTopics(subject) {
+  const topics = TOPICS[subject];
+  const container = document.getElementById(`topics-${subject}`);
+  container.innerHTML = topics.map(t => `
+    <div class="topic-card" onclick="openLesson('${t.id}', '${subject}')">
+      <div class="topic-card-header">
+        <div class="topic-icon ${subject}">${t.icon}</div>
+        <div>
+          <div class="topic-title">${t.title}</div>
+          <div class="topic-desc">${t.desc}</div>
+        </div>
+      </div>
+      <div class="topic-footer">
+        <span class="topic-difficulty ${t.difficulty}">${t.difficulty.charAt(0).toUpperCase() + t.difficulty.slice(1)}</span>
+        <span class="topic-xp ${STATE.completedLessons.includes(t.id) ? 'style="color:var(--green)"' : ''}">
+          ${STATE.completedLessons.includes(t.id) ? '✓ Completed' : `+${t.xp} XP`}
+        </span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function switchSubject(subject, el) {
+  document.querySelectorAll('.subject-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.subject-content').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`subject-${subject}`).classList.add('active');
+}
+
+let currentLesson = null;
+
+function openLesson(id, subject) {
+  const all = Object.values(TOPICS).flat();
+  const topic = all.find(t => t.id === id);
+  if (!topic) return;
+  currentLesson = topic;
+  document.getElementById('modalTitle').textContent = topic.title;
+  document.getElementById('modalMeta').textContent = `${subject.charAt(0).toUpperCase() + subject.slice(1)} · ${topic.difficulty} · ${topic.xp} XP`;
+  document.getElementById('lessonContent').innerHTML = topic.content;
+  const btn = document.getElementById('lessonCompleteBtn');
+  if (STATE.completedLessons.includes(id)) {
+    btn.textContent = '✓ Already Completed';
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+  } else {
+    btn.textContent = `✓ Mark Complete (+${topic.xp} XP)`;
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  }
+  document.getElementById('lessonModal').classList.add('open');
+}
+
+function closeLessonModal() {
+  document.getElementById('lessonModal').classList.remove('open');
+}
+
+function completeLesson() {
+  if (!currentLesson || STATE.completedLessons.includes(currentLesson.id)) return;
+  STATE.completedLessons.push(currentLesson.id);
+  addXP(currentLesson.xp, `Lesson: ${currentLesson.title}`);
+  addActivity(`Completed: ${currentLesson.title}`, `+${currentLesson.xp} XP`, '📚', 'rgba(124,109,250,0.15)');
+  saveState();
+  closeLessonModal();
+  // Re-render topics
+  const subject = currentLesson.id.split('-')[0] === 'math' ? 'math'
+    : currentLesson.id.startsWith('sci') ? 'science'
+    : currentLesson.id.startsWith('hist') ? 'history' : 'coding';
+  renderTopics(subject);
+}
+
+// ─────────────────────────────────────────────────
+// AI CHAT
+// ─────────────────────────────────────────────────
+let chatHistory = [];
+let chatTyping = false;
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChat();
+  }
+}
+
+function sendSuggestion(el) {
+  document.getElementById('chatInput').value = el.textContent;
+  sendChat();
+  document.getElementById('chatSuggestions').style.display = 'none';
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg || chatTyping) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendMessage('user', msg);
+  chatHistory.push({ role: 'user', content: msg });
+
+  chatTyping = true;
+  document.getElementById('chatSendBtn').disabled = true;
+  const typingId = appendTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are EduQuest AI Tutor — a friendly, enthusiastic, and expert educational assistant for a learning platform. Your goal is to explain concepts clearly and engagingly to learners of all ages. Use simple language, analogies, and examples. Keep responses concise but complete. When appropriate, use bullet points or numbered steps. Always encourage the learner and make learning fun!`,
+        messages: chatHistory
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || "I'm having trouble connecting right now. Please try again!";
+
+    removeTyping(typingId);
+    appendMessage('ai', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+    addXP(5, 'AI Chat interaction');
+
+  } catch (err) {
+    removeTyping(typingId);
+    appendMessage('ai', "I'm having trouble connecting to the AI backend. Make sure the API is running on localhost:3001, or check your connection!");
+  }
+
+  chatTyping = false;
+  document.getElementById('chatSendBtn').disabled = false;
+}
+
+function appendMessage(role, content) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `chat-message ${role}`;
+  div.innerHTML = `
+    <div class="chat-avatar ${role}">${role === 'ai' ? '🤖' : '👤'}</div>
+    <div class="chat-bubble ${role}">${formatChatMessage(content)}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function formatChatMessage(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code style="font-family:var(--font-mono);background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:4px;font-size:12px">$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+let typingCounter = 0;
+function appendTyping() {
+  const id = `typing-${++typingCounter}`;
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-message';
+  div.id = id;
+  div.innerHTML = `
+    <div class="chat-avatar ai">🤖</div>
+    <div class="chat-bubble ai typing">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeTyping(id) {
+  document.getElementById(id)?.remove();
+}
+
+// ─────────────────────────────────────────────────
+// QUIZ
+// ─────────────────────────────────────────────────
+const QUIZ_QUESTIONS = {
+  math: [
+    { q: "What is the result of 7 × 8?", options: ["54","56","62","48"], correct: 1 },
+    { q: "Solve for x: 2x + 6 = 20", options: ["x = 5","x = 7","x = 13","x = 3"], correct: 1 },
+    { q: "What is the area of a circle with radius 5? (π ≈ 3.14)", options: ["31.4","78.5","25","15.7"], correct: 1 },
+    { q: "What is the Pythagorean theorem?", options: ["a+b=c","a²-b²=c²","a²+b²=c²","2a+b=c"], correct: 2 },
+    { q: "What is 15% of 200?", options: ["25","30","35","20"], correct: 1 },
+    { q: "What is the derivative of x²?", options: ["x","2x","2","x³/3"], correct: 1 },
+    { q: "What is the mean of: 4, 8, 6, 5, 3, 2, 8, 9, 2, 5?", options: ["5","5.2","6","5.8"], correct: 1 },
+    { q: "What is ∫2x dx?", options: ["2","x²+C","2x+C","x²"], correct: 1 },
+    { q: "If P(A) = 0.3, what is P(not A)?", options: ["0.7","0.3","1.3","0.03"], correct: 0 },
+    { q: "What is 2⁸?", options: ["128","256","512","64"], correct: 1 }
+  ],
+  science: [
+    { q: "What force causes objects to fall toward Earth?", options: ["Magnetism","Gravity","Friction","Inertia"], correct: 1 },
+    { q: "Newton's Second Law is expressed as:", options: ["F=mv","F=ma","E=mc²","P=mv"], correct: 1 },
+    { q: "What organelle is the 'powerhouse of the cell'?", options: ["Nucleus","Ribosome","Mitochondria","Golgi"], correct: 2 },
+    { q: "What is the chemical formula for water?", options: ["HO","H₂O","H₂O₂","HO₂"], correct: 1 },
+    { q: "What gas do plants absorb during photosynthesis?", options: ["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"], correct: 2 },
+    { q: "How many protons does Carbon (C) have?", options: ["2","4","6","8"], correct: 2 },
+    { q: "Which type of cell division produces gametes?", options: ["Mitosis","Meiosis","Binary fission","Budding"], correct: 1 },
+    { q: "The speed of light is approximately:", options: ["300,000 km/s","150,000 km/s","30,000 km/s","3,000,000 km/s"], correct: 0 },
+    { q: "What does DNA stand for?", options: ["Deoxyribonucleic Acid","Dextro Nucleic Acid","Double Nucleic Array","Dynamic Nucleotide Assembly"], correct: 0 },
+    { q: "Which law states 'for every action, there is an equal and opposite reaction'?", options: ["Newton's 1st Law","Newton's 2nd Law","Newton's 3rd Law","Law of Conservation"], correct: 2 }
+  ],
+  history: [
+    { q: "In which year did World War II end?", options: ["1943","1944","1945","1946"], correct: 2 },
+    { q: "Who was the first Roman Emperor?", options: ["Julius Caesar","Augustus","Nero","Constantine"], correct: 1 },
+    { q: "The Renaissance began in which country?", options: ["France","Germany","Spain","Italy"], correct: 3 },
+    { q: "The Industrial Revolution began in which country?", options: ["France","USA","Germany","Great Britain"], correct: 3 },
+    { q: "Who wrote 'The Prince', a political treatise from the Renaissance?", options: ["Machiavelli","Dante","Galileo","Da Vinci"], correct: 0 },
+    { q: "What year did the Berlin Wall fall?", options: ["1985","1987","1989","1991"], correct: 2 },
+    { q: "Which empire was ruled by Julius Caesar?", options: ["Greek","Persian","Roman","Egyptian"], correct: 2 },
+    { q: "D-Day (the Normandy invasion) occurred on:", options: ["June 6, 1944","July 4, 1944","May 8, 1945","Sept 1, 1939"], correct: 0 },
+    { q: "The French Revolution began in which year?", options: ["1776","1789","1799","1815"], correct: 1 },
+    { q: "What was the name of the ship that sank in 1912?", options: ["Lusitania","Olympic","Britannic","Titanic"], correct: 3 }
+  ],
+  coding: [
+    { q: "What does 'DRY' stand for in programming?", options: ["Define Runtime Yields","Don't Repeat Yourself","Dynamic Runtime Yoke","Data Retrieval Yield"], correct: 1 },
+    { q: "What is the time complexity of Binary Search?", options: ["O(n)","O(n²)","O(log n)","O(1)"], correct: 2 },
+    { q: "Which is NOT a data type?", options: ["Integer","Boolean","Algorithm","String"], correct: 2 },
+    { q: "A 'for' loop is best used when:", options: ["You don't know how many iterations","You know the exact number of iterations","You need infinite loops","Conditions are unknown"], correct: 1 },
+    { q: "What does a function 'return' statement do?", options: ["Ends the program","Prints output","Sends a value back to the caller","Starts a loop"], correct: 2 },
+    { q: "What is O(n²) complexity typically associated with?", options: ["Binary search","Nested loops","Single array traversal","Hash lookups"], correct: 1 },
+    { q: "In Python, which keyword defines a function?", options: ["func","function","def","define"], correct: 2 },
+    { q: "What is a 'boolean' data type?", options: ["A number","True or False","A text string","A list"], correct: 1 },
+    { q: "What is the output of: for i in range(3): print(i)?", options: ["1 2 3","0 1 2","0 1 2 3","1 2"], correct: 1 },
+    { q: "Which sorting algorithm has average O(n log n) complexity?", options: ["Bubble Sort","Selection Sort","Quick Sort","Insertion Sort"], correct: 2 }
+  ]
+};
+
+let quizState = { subject: '', questions: [], index: 0, score: 0, answered: false };
+
+function startQuiz(subject) {
+  quizState.subject = subject;
+  quizState.questions = [...QUIZ_QUESTIONS[subject]].sort(() => Math.random() - 0.5);
+  quizState.index = 0;
+  quizState.score = 0;
+  quizState.answered = false;
+
+  document.getElementById('quizSelector').style.display = 'none';
+  document.getElementById('quizArena').classList.add('active');
+  document.getElementById('quizFeedback').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quizState.questions[quizState.index];
+  const total = quizState.questions.length;
+  const pct = (quizState.index / total) * 100;
+
+  document.getElementById('quizCounter').textContent = `Question ${quizState.index + 1} / ${total}`;
+  document.getElementById('quizScoreLive').textContent = `Score: ${quizState.score}`;
+  document.getElementById('quizProgressFill').style.width = pct + '%';
+  document.getElementById('quizQuestionText').textContent = q.q;
+  document.getElementById('quizNextBtn').style.display = 'none';
+  document.getElementById('quizFeedback').style.display = 'none';
+  quizState.answered = false;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('quizOptions').innerHTML = q.options.map((opt, i) => `
+    <div class="quiz-option" onclick="selectAnswer(${i})">
+      <div class="quiz-option-letter">${letters[i]}</div>
+      ${opt}
+    </div>
+  `).join('');
+}
+
+function selectAnswer(index) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+
+  const q = quizState.questions[quizState.index];
+  const options = document.querySelectorAll('.quiz-option');
+  const isCorrect = index === q.correct;
+
+  options.forEach((opt, i) => {
+    if (i === q.correct) opt.classList.add('correct');
+    else if (i === index && !isCorrect) opt.classList.add('wrong');
+  });
+
+  if (isCorrect) {
+    quizState.score += 10;
+    document.getElementById('quizScoreLive').textContent = `Score: ${quizState.score}`;
+    showToast('Correct! +10 points', 'success', '✅');
+  } else {
+    showToast(`Wrong! The answer was: ${q.options[q.correct]}`, 'error', '❌');
+  }
+
+  document.getElementById('quizNextBtn').style.display = 'block';
+
+  if (STATE.settings.autoAdvance) {
+    setTimeout(nextQuestion, 1200);
+  }
+}
+
+function nextQuestion() {
+  quizState.index++;
+  if (quizState.index >= quizState.questions.length) {
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishQuiz() {
+  const total = quizState.questions.length;
+  const pct = Math.round((quizState.score / (total * 10)) * 100);
+  const xpEarned = Math.round(quizState.score * 1.5);
+  
+  STATE.quizzesTaken++;
+  STATE.totalQuizScore += quizState.score;
+  if (pct >= 70) STATE.quizzesPassed++;
+  addXP(xpEarned, `${quizState.subject} Quiz`);
+  addActivity(`Completed ${quizState.subject} quiz`, `+${xpEarned} XP`, '🧠', 'rgba(6,182,212,0.15)');
+
+  // Save to leaderboard
+  const lbKey = `eduquest_lb_quiz_${Date.now()}`;
+  const lbEntry = { name: STATE.playerName, avatar: STATE.playerAvatar, score: quizState.score, subject: quizState.subject, date: new Date().toLocaleDateString() };
+  localStorage.setItem(lbKey, JSON.stringify(lbEntry));
+  saveState();
+
+  const grade = pct >= 90 ? '🏆 Excellent!' : pct >= 70 ? '🎉 Great Job!' : pct >= 50 ? '👍 Good Effort!' : '💪 Keep Practicing!';
+  
+  document.getElementById('quizArena').innerHTML = `
+    <div class="quiz-result-screen">
+      <div class="quiz-result-score">${pct}%</div>
+      <div class="quiz-result-title">${grade}</div>
+      <div class="quiz-result-sub">You scored ${quizState.score} out of ${total * 10} points</div>
+      <div class="quiz-result-stats">
+        <div class="quiz-stat"><span class="quiz-stat-val" style="color:var(--green)">${quizState.score}</span><span class="quiz-stat-label">Points</span></div>
+        <div class="quiz-stat"><span class="quiz-stat-val" style="color:var(--accent)">${xpEarned}</span><span class="quiz-stat-label">XP Earned</span></div>
+        <div class="quiz-stat"><span class="quiz-stat-val" style="color:var(--amber)">${pct}%</span><span class="quiz-stat-label">Accuracy</span></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="retryQuiz()">🔁 Try Again</button>
+        <button class="btn btn-ghost" onclick="quitQuiz()">📚 Back to Quizzes</button>
+      </div>
+    </div>
+  `;
+}
+
+function retryQuiz() {
+  const subject = quizState.subject;
+  document.getElementById('quizArena').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <button class="btn btn-ghost" onclick="quitQuiz()" style="font-size:13px;padding:7px 14px">← Back</button>
+      <div class="quiz-header" style="margin:0">
+        <span class="quiz-counter" id="quizCounter">Question 1 / 10</span>
+        <span class="quiz-score-live" id="quizScoreLive">Score: 0</span>
+      </div>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+    <div class="quiz-question-card" id="quizQuestionCard">
+      <div class="quiz-question-text" id="quizQuestionText">Loading...</div>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+    <div id="quizFeedback" style="display:none"></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none">Next →</button></div>
+  `;
+  document.getElementById('quizArena').classList.add('active');
+  startQuiz(subject);
+}
+
+function quitQuiz() {
+  document.getElementById('quizSelector').style.display = 'block';
+  const arena = document.getElementById('quizArena');
+  arena.classList.remove('active');
+  arena.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <button class="btn btn-ghost" onclick="quitQuiz()" style="font-size:13px;padding:7px 14px">← Back</button>
+      <div class="quiz-header" style="margin:0">
+        <span class="quiz-counter" id="quizCounter">Question 1 / 10</span>
+        <span class="quiz-score-live" id="quizScoreLive">Score: 0</span>
+      </div>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="width:0%"></div></div>
+    <div class="quiz-question-card" id="quizQuestionCard">
+      <div class="quiz-question-text" id="quizQuestionText">Loading...</div>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+    <div id="quizFeedback" style="display:none"></div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" id="quizNextBtn" onclick="nextQuestion()" style="display:none">Next →</button></div>
+  `;
+}
+
+// ─────────────────────────────────────────────────
+// MINI GAME — Asteroid Blaster
+// ─────────────────────────────────────────────────
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const gameState = {
+  running: false, paused: false,
+  player: { x: 350, y: 390, w: 28, h: 28, speed: 4, color: '#7c6dfa' },
+  bullets: [], asteroids: [], stars: [], particles: [],
+  score: 0, lives: 3, wave: 1, frame: 0,
+  keys: {}, invincible: 0
+};
+
+const COLORS = {
+  bg: '#0a0a0f', player: '#7c6dfa', bullet: '#22d3a0', asteroid: ['#ef4444','#f59e0b','#ec4899'],
+  star: '#f0f0f8'
+};
+
+function initStars() {
+  gameState.stars = Array.from({length: 80}, () => ({
+    x: Math.random() * 700, y: Math.random() * 450,
+    r: Math.random() * 1.5 + 0.3, speed: Math.random() * 0.5 + 0.1, brightness: Math.random()
+  }));
+}
+
+function startGame() {
+  gameState.running = true;
+  gameState.paused = false;
+  gameState.score = 0; gameState.lives = 3; gameState.wave = 1; gameState.frame = 0;
+  gameState.bullets = []; gameState.asteroids = []; gameState.particles = [];
+  gameState.player.x = 350; gameState.player.y = 390;
+  gameState.invincible = 0;
+  updateGameHUD();
+  document.getElementById('gameOverOverlay').style.display = 'none';
+  document.getElementById('gameStartBtn').style.display = 'none';
+  document.getElementById('gamePauseBtn').style.display = 'inline-flex';
+  if (!gameState.starsInit) { initStars(); gameState.starsInit = true; }
+  if (gameState.animId) cancelAnimationFrame(gameState.animId);
+  gameLoop();
+}
+
+function togglePause() {
+  gameState.paused = !gameState.paused;
+  document.getElementById('gamePauseBtn').textContent = gameState.paused ? '▶ Resume' : '⏸ Pause';
+  if (!gameState.paused) gameLoop();
+}
+
+function spawnAsteroid() {
+  const edge = Math.floor(Math.random() * 4);
+  let x, y, vx, vy;
+  const sp = 1 + gameState.wave * 0.3;
+  if (edge === 0) { x = Math.random()*700; y = -20; vx = (Math.random()-0.5)*sp*2; vy = sp+Math.random()*sp; }
+  else if (edge === 1) { x = 720; y = Math.random()*450; vx = -(sp+Math.random()*sp); vy = (Math.random()-0.5)*sp*2; }
+  else if (edge === 2) { x = Math.random()*700; y = 470; vx = (Math.random()-0.5)*sp*2; vy = -(sp+Math.random()*sp); }
+  else { x = -20; y = Math.random()*450; vx = sp+Math.random()*sp; vy = (Math.random()-0.5)*sp*2; }
+  const size = 14 + Math.random() * 20;
+  gameState.asteroids.push({
+    x, y, vx, vy, size, hp: size > 25 ? 2 : 1, maxHp: size > 25 ? 2 : 1,
+    color: COLORS.asteroid[Math.floor(Math.random()*3)], rot: 0, rotSpeed: (Math.random()-0.5)*0.05,
+    pts: Math.floor(size)
+  });
+}
+
+function spawnParticles(x, y, color, n) {
+  for (let i = 0; i < n; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 3 + 1;
+    gameState.particles.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, color, life: 30, maxLife: 30 });
+  }
+}
+
+function gameLoop() {
+  if (!gameState.running || gameState.paused) return;
+  gameState.frame++;
+
+  // Spawn
+  const spawnRate = Math.max(40, 120 - gameState.wave * 10);
+  if (gameState.frame % spawnRate === 0) spawnAsteroid();
+  if (gameState.frame % 600 === 0) gameState.wave++;
+
+  // Input
+  const p = gameState.player;
+  if (gameState.keys['ArrowLeft'] || gameState.keys['KeyA']) p.x = Math.max(14, p.x - p.speed);
+  if (gameState.keys['ArrowRight'] || gameState.keys['KeyD']) p.x = Math.min(686, p.x + p.speed);
+  if (gameState.keys['ArrowUp'] || gameState.keys['KeyW']) p.y = Math.max(14, p.y - p.speed);
+  if (gameState.keys['ArrowDown'] || gameState.keys['KeyS']) p.y = Math.min(436, p.y + p.speed);
+  if ((gameState.keys['Space']) && gameState.frame % 12 === 0) {
+    gameState.bullets.push({ x: p.x, y: p.y - 16, speed: 8, w: 4, h: 10 });
+  }
+
+  // Update bullets
+  gameState.bullets = gameState.bullets.filter(b => { b.y -= b.speed; return b.y > -10; });
+
+  // Update asteroids
+  gameState.asteroids.forEach(a => { a.x += a.vx; a.y += a.vy; a.rot += a.rotSpeed; });
+  gameState.asteroids = gameState.asteroids.filter(a => a.x > -60 && a.x < 760 && a.y > -60 && a.y < 510);
+
+  // Update stars
+  gameState.stars.forEach(s => { s.y += s.speed; if (s.y > 450) { s.y = 0; s.x = Math.random()*700; } });
+
+  // Update particles
+  gameState.particles.forEach(pt => { pt.x += pt.vx; pt.y += pt.vy; pt.life--; pt.vx *= 0.95; pt.vy *= 0.95; });
+  gameState.particles = gameState.particles.filter(pt => pt.life > 0);
+
+  // Bullet-asteroid collision
+  gameState.bullets.forEach((b, bi) => {
+    gameState.asteroids.forEach((a, ai) => {
+      const dx = b.x - a.x, dy = b.y - a.y;
+      if (Math.sqrt(dx*dx + dy*dy) < a.size) {
+        a.hp--;
+        spawnParticles(a.x, a.y, a.color, 5);
+        if (a.hp <= 0) {
+          gameState.score += a.pts;
+          spawnParticles(a.x, a.y, a.color, 12);
+          gameState.asteroids.splice(ai, 1);
+        }
+        gameState.bullets.splice(bi, 1);
+        updateGameHUD();
+      }
+    });
+  });
+
+  // Player-asteroid collision
+  if (gameState.invincible <= 0) {
+    gameState.asteroids.forEach((a, ai) => {
+      const dx = p.x - a.x, dy = p.y - a.y;
+      if (Math.sqrt(dx*dx + dy*dy) < a.size + 12) {
+        gameState.lives--;
+        gameState.invincible = 90;
+        spawnParticles(p.x, p.y, '#7c6dfa', 20);
+        gameState.asteroids.splice(ai, 1);
+        updateGameHUD();
+        if (gameState.lives <= 0) { gameOver(); return; }
+      }
+    });
+  } else { gameState.invincible--; }
+
+  // Draw
+  draw();
+  gameState.animId = requestAnimationFrame(gameLoop);
+}
+
+function draw() {
+  ctx.fillStyle = COLORS.bg;
+  ctx.fillRect(0, 0, 700, 450);
+
+  // Stars
+  gameState.stars.forEach(s => {
+    ctx.globalAlpha = 0.4 + s.brightness * 0.5;
+    ctx.fillStyle = COLORS.star;
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Particles
+  gameState.particles.forEach(pt => {
+    ctx.globalAlpha = pt.life / pt.maxLife;
+    ctx.fillStyle = pt.color;
+    ctx.beginPath(); ctx.arc(pt.x, pt.y, 3, 0, Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Asteroids
+  gameState.asteroids.forEach(a => {
+    ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(a.rot);
+    ctx.fillStyle = a.color;
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    const pts = 7 + Math.floor(a.size/8);
+    for (let i = 0; i < pts; i++) {
+      const angle = (i / pts) * Math.PI * 2;
+      const r = a.size * (0.8 + Math.sin(i*2.3)*0.2);
+      i === 0 ? ctx.moveTo(Math.cos(angle)*r, Math.sin(angle)*r) : ctx.lineTo(Math.cos(angle)*r, Math.sin(angle)*r);
+    }
+    ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  });
+
+  // Bullets
+  gameState.bullets.forEach(b => {
+    ctx.fillStyle = COLORS.bullet;
+    ctx.shadowBlur = 8; ctx.shadowColor = COLORS.bullet;
+    ctx.fillRect(b.x - b.w/2, b.y, b.w, b.h);
+    ctx.shadowBlur = 0;
+  });
+
+  // Player
+  const p = gameState.player;
+  if (gameState.invincible <= 0 || Math.floor(gameState.invincible / 8) % 2 === 0) {
+    ctx.save(); ctx.translate(p.x, p.y);
+    ctx.fillStyle = COLORS.player;
+    ctx.shadowBlur = 16; ctx.shadowColor = COLORS.player;
+    ctx.beginPath();
+    ctx.moveTo(0, -16); ctx.lineTo(-12, 14); ctx.lineTo(-5, 8); ctx.lineTo(0, 12); ctx.lineTo(5, 8); ctx.lineTo(12, 14);
+    ctx.closePath(); ctx.fill();
+    // Engine glow
+    ctx.fillStyle = '#22d3a0';
+    ctx.shadowColor = '#22d3a0';
+    ctx.globalAlpha = 0.7 + Math.sin(gameState.frame*0.3)*0.3;
+    ctx.beginPath(); ctx.ellipse(0, 16, 5, 8, 0, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
+
+  // Wave indicator
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.font = '500 13px Space Grotesk';
+  ctx.textAlign = 'center';
+  ctx.fillText(`WAVE ${gameState.wave}`, 350, 24);
+}
+
+function updateGameHUD() {
+  document.getElementById('gameLives').textContent = gameState.lives;
+  document.getElementById('gameScore').textContent = gameState.score;
+  document.getElementById('gameWave').textContent = gameState.wave;
+  document.getElementById('gameBest').textContent = STATE.gameHighScore;
+}
+
+function gameOver() {
+  gameState.running = false;
+  cancelAnimationFrame(gameState.animId);
+  document.getElementById('gameOverScore').textContent = gameState.score;
+  document.getElementById('gameOverOverlay').style.display = 'flex';
+  document.getElementById('gameStartBtn').style.display = 'inline-flex';
+  document.getElementById('gamePauseBtn').style.display = 'none';
+  if (gameState.score > STATE.gameHighScore) {
+    STATE.gameHighScore = gameState.score;
+    addXP(Math.floor(gameState.score / 5), 'New High Score!');
+    saveState();
+  }
+}
+
+function saveScore() {
+  const lbKey = `eduquest_lb_game_${Date.now()}`;
+  localStorage.setItem(lbKey, JSON.stringify({
+    name: STATE.playerName, avatar: STATE.playerAvatar,
+    score: gameState.score, wave: gameState.wave, date: new Date().toLocaleDateString()
+  }));
+  showToast('Score saved to leaderboard!', 'success', '🏆');
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  gameState.keys[e.code] = true;
+  if (e.code === 'KeyP') togglePause();
+  if (e.code === 'Space') e.preventDefault();
+});
+document.addEventListener('keyup', e => { gameState.keys[e.code] = false; });
+
+// Touch controls
+function touchStart(dir) {
+  if (dir === 'up') gameState.keys['ArrowUp'] = true;
+  if (dir === 'down') gameState.keys['ArrowDown'] = true;
+  if (dir === 'left') gameState.keys['ArrowLeft'] = true;
+  if (dir === 'right') gameState.keys['ArrowRight'] = true;
+  if (dir === 'shoot') gameState.keys['Space'] = true;
+}
+function touchEnd(dir) {
+  if (dir === 'up') gameState.keys['ArrowUp'] = false;
+  if (dir === 'down') gameState.keys['ArrowDown'] = false;
+  if (dir === 'left') gameState.keys['ArrowLeft'] = false;
+  if (dir === 'right') gameState.keys['ArrowRight'] = false;
+  if (dir === 'shoot') gameState.keys['Space'] = false;
+}
+
+// Draw idle screen
+function drawIdle() {
+  initStars();
+  ctx.fillStyle = COLORS.bg;
+  ctx.fillRect(0, 0, 700, 450);
+  gameState.stars.forEach(s => {
+    ctx.globalAlpha = 0.4 + s.brightness*0.5;
+    ctx.fillStyle = COLORS.star;
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(124,109,250,0.8)';
+  ctx.font = '700 28px Syne';
+  ctx.textAlign = 'center';
+  ctx.fillText('ASTEROID BLASTER', 350, 200);
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.font = '500 16px Space Grotesk';
+  ctx.fillText('Press Start to play', 350, 240);
+}
+
+// ─────────────────────────────────────────────────
+// LEADERBOARD
+// ─────────────────────────────────────────────────
+let currentLbTab = 'game';
+
+function switchLbTab(type, el) {
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentLbTab = type;
+  renderLeaderboard(type);
+}
+
+function renderLeaderboard(type) {
+  const container = document.getElementById('lbContent');
+  let entries = [];
+
+  if (type === 'game') {
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('eduquest_lb_game_'));
+    entries = keys.map(k => JSON.parse(localStorage.getItem(k))).sort((a,b) => b.score - a.score);
+  } else if (type === 'quiz') {
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('eduquest_lb_quiz_'));
+    entries = keys.map(k => JSON.parse(localStorage.getItem(k))).sort((a,b) => b.score - a.score);
+  } else if (type === 'xp') {
+    entries = [{ name: STATE.playerName, avatar: STATE.playerAvatar, score: STATE.xp, detail: `Level ${STATE.level}`, date: 'Current session' }];
+  }
+
+  if (!entries.length) {
+    container.innerHTML = `
+      <div class="leaderboard-table">
+        <div class="lb-empty">
+          <div class="lb-empty-icon">🏆</div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:6px">No scores yet!</div>
+          <div style="font-size:13px;color:var(--text3)">${type === 'game' ? 'Play the game to set a score' : type === 'quiz' ? 'Take a quiz to earn points' : 'Earn XP to rank up'}</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const rankIcons = ['🥇', '🥈', '🥉'];
+  container.innerHTML = `
+    <div class="leaderboard-table">
+      ${entries.slice(0, 20).map((e, i) => `
+        <div class="lb-row ${e.name === STATE.playerName ? 'current-player' : ''}">
+          <div class="lb-rank ${i < 3 ? 'top'+(i+1) : ''}">${i < 3 ? rankIcons[i] : i+1}</div>
+          <div class="lb-avatar">${e.avatar || '🦁'}</div>
+          <div class="lb-info">
+            <div class="lb-name">${e.name || 'Scholar'}</div>
+            <div class="lb-detail">${e.detail || (type==='game' ? `Wave ${e.wave||1}` : e.subject || '')} · ${e.date}</div>
+          </div>
+          <div class="lb-score">${e.score}${type==='xp'?' XP':type==='game'?'':' pts'}</div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────
+// SETTINGS
+// ─────────────────────────────────────────────────
+const AVATARS = ['🦁','🐯','🦊','🐺','🦅','🐲','🦄','🐉','🤖','👾','🧙','⚡'];
+
+function initSettings() {
+  document.getElementById('nameInput').value = STATE.playerName;
+
+  // Avatars
+  const picker = document.getElementById('avatarPicker');
+  picker.innerHTML = AVATARS.map(a => `
+    <button onclick="selectAvatar('${a}')" style="
+      width:38px;height:38px;border-radius:10px;font-size:20px;cursor:pointer;
+      background:${a === STATE.playerAvatar ? 'rgba(124,109,250,0.2)' : 'var(--bg3)'};
+      border:1.5px solid ${a === STATE.playerAvatar ? 'rgba(124,109,250,0.5)' : 'var(--border)'};
+      transition:all 0.15s;
+    ">${a}</button>
+  `).join('');
+
+  // Toggles
+  ['sound','xpAnim','autoAdvance'].forEach(key => {
+    const ids = { sound: 'soundToggle', xpAnim: 'xpAnimToggle', autoAdvance: 'autoAdvanceToggle' };
+    const el = document.getElementById(ids[key]);
+    if (STATE.settings[key]) el.classList.add('on'); else el.classList.remove('on');
+  });
+}
+
+function selectAvatar(a) {
+  STATE.playerAvatar = a;
+  saveState();
+  initSettings();
+  showToast('Avatar updated!', 'success', a);
+}
+
+function saveName() {
+  const val = document.getElementById('nameInput').value.trim();
+  if (!val) return;
+  STATE.playerName = val;
+  saveState();
+  updateXPUI();
+  showToast('Name saved!', 'success', '✅');
+}
+
+function toggleSetting(key) {
+  STATE.settings[key] = !STATE.settings[key];
+  saveState();
+  initSettings();
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('eduquest_')).forEach(k => localStorage.removeItem(k));
+  Object.assign(STATE, { xp: 0, level: 1, streak: 1, completedLessons: [], quizzesTaken: 0, gameHighScore: 0, totalQuizScore: 0, quizzesPassed: 0, activity: [], lastVisit: new Date().toDateString() });
+  saveState();
+  updateXPUI();
+  renderActivity();
+  showToast('Progress reset.', 'info', '🔄');
+  // Re-render topics
+  ['math','science','history','coding'].forEach(renderTopics);
+}
+
+// ─────────────────────────────────────────────────
+// TOAST & XP POPUP
+// ─────────────────────────────────────────────────
+function showToast(msg, type = 'info', icon = 'ℹ️') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span style="font-size:16px">${icon}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+function showXPPopup(amount) {
+  const el = document.createElement('div');
+  el.className = 'xp-popup';
+  el.textContent = `+${amount} XP`;
+  el.style.cssText = `left:${50+Math.random()*200}px;bottom:120px;`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+// PWA
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+function promptInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  } else {
+    showToast('To install: use your browser\'s "Add to Home Screen" option.', 'info', '📲');
+  }
+}
+
+// ─────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────
+function init() {
+  loadState();
+  updateXPUI();
+  renderActivity();
+  ['math','science','history','coding'].forEach(renderTopics);
+  drawIdle();
+  if (STATE.activity.length === 0) {
+    addActivity('Joined EduQuest', '+0 XP', '🚀', 'rgba(124,109,250,0.15)');
+  }
+
+  // Service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+
+init();
+</script>
+</body>
+</html>
